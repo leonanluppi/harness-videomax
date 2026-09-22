@@ -6,7 +6,6 @@ const schema = z.object({
   logLevel: z.enum(["debug", "info", "warn", "error"]).default("info"),
   databaseUrl: z.string().url(),
   nodeEnv: z.enum(["development", "test", "production"]).default("development"),
-  sessionCookieName: z.string().min(1).default("session_token"),
   sessionTtlDays: z.coerce.number().int().positive().default(30),
 });
 
@@ -15,7 +14,6 @@ const parsed = schema.safeParse({
   logLevel: process.env["LOG_LEVEL"],
   databaseUrl: process.env["DATABASE_URL"],
   nodeEnv: process.env["NODE_ENV"],
-  sessionCookieName: process.env["SESSION_COOKIE_NAME"],
   sessionTtlDays: process.env["SESSION_TTL_DAYS"],
 });
 
