@@ -29,6 +29,17 @@ require_startup_commands() {
 ensure_postgres() {
     [ "$HAS_DB" = "true" ] || return 0
     if pg_isready -h 127.0.0.1 -p "$APP_PG_PORT" > /dev/null 2>&1; then
+        # A container publishing this port is this project's docker-compose Postgres
+        # (or an equivalent one) reused from another worktree — it needs the
+        # postgres/postgres credentials, not the local OS user, even though
+        # pg_isready reports it as reachable. Without this check, "reuse" mode
+        # assumes trust-auth-as-$USER, which fails against the compose container.
+        if command -v docker > /dev/null 2>&1 \
+            && [ -n "$(docker ps --filter "publish=${APP_PG_PORT}" --format '{{.Names}}' 2>/dev/null)" ]; then
+            APP_PG_MODE="docker"
+            log "Reusing docker-compose PostgreSQL already running on :${APP_PG_PORT}."
+            return 0
+        fi
         APP_PG_MODE="reuse"
         log "PostgreSQL already running on :${APP_PG_PORT}."
         return 0
