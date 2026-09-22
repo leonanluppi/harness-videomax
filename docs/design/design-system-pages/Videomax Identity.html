@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1600"/>
+<title>Videomax — Visual Identity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; background: #f0eee9; }
+  * { box-sizing: border-box; }
+  button { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="components/tokens.jsx"></script>
+<script type="text/babel" src="components/ui.jsx"></script>
+<script type="text/babel" src="components/footer.jsx"></script>
+<script type="text/babel" src="components/landing.jsx"></script>
+<script type="text/babel" src="components/auth.jsx"></script>
+<script type="text/babel" src="components/library.jsx"></script>
+<script type="text/babel" src="components/library2.jsx"></script>
+<script type="text/babel" src="components/upload.jsx"></script>
+<script type="text/babel" src="components/notif.jsx"></script>
+
+<script type="text/babel">
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "accentHueA": 40,
+  "accentHueB": 40,
+  "radius": 6,
+  "showOnly": "all"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [tweaks, setTweaks] = React.useState(TWEAKS);
+  const [editMode, setEditMode] = React.useState(false);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const d = e.data || {};
+      if (d.type === '__activate_edit_mode') setEditMode(true);
+      if (d.type === '__deactivate_edit_mode') setEditMode(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  // Rebuild A & B token objects with accent-hue overrides
+  const tA = React.useMemo(() => {
+    const hue = tweaks.accentHueA;
+    return {
+      ...VM_TOKENS.A,
+      accent:   `oklch(0.70 0.175 ${hue})`,
+      accentHi: `oklch(0.62 0.19 ${hue})`,
+      accentLo: `oklch(0.96 0.045 ${hue})`,
+      accentInk:`oklch(0.35 0.14 ${hue})`,
+    };
+  }, [tweaks.accentHueA]);
+
+  const tB = React.useMemo(() => {
+    const hue = tweaks.accentHueB;
+    return {
+      ...VM_TOKENS.B,
+      accent:   `oklch(0.74 0.175 ${hue})`,
+      accentHi: `oklch(0.68 0.19 ${hue})`,
+      accentLo: `oklch(0.28 0.08 ${hue})`,
+      accentInk:`oklch(0.88 0.09 ${hue})`,
+    };
+  }, [tweaks.accentHueB]);
+
+  const W = 1360, H_BIG = 920, H_AUTH = 720, H_NOTIF = 420;
+  const show = tweaks.showOnly;
+  const showAll = show === 'all';
+
+  return (
+    <DesignCanvas minScale={0.08} maxScale={2}>
+      {/* Header strip */}
+      <div style={{ padding: '0 60px 48px', maxWidth: 1400 }}>
+        <div style={{
+          fontFamily:'"Geist Mono", monospace', fontSize: 11,
+          color:'rgba(80,60,40,0.7)', letterSpacing:'0.1em', marginBottom: 8,
+        }}>VIDEOMAX · VISUAL IDENTITY · TWO DIRECTIONS</div>
+        <div style={{ fontSize: 46, fontWeight: 600, letterSpacing:'-0.03em', color:'rgba(30,20,10,0.9)', lineHeight: 1.05, marginBottom: 12 }}>
+          Original brand system for videomax.
+        </div>
+        <div style={{ fontSize: 16, color:'rgba(60,45,30,0.7)', maxWidth: 820, lineHeight: 1.55 }}>
+          Two directions side-by-side. <b>A · Ember</b> is warm paper + orange
+          signal — a bright creator studio. <b>B · Signal</b> inverts to a dark
+          studio with the same electric orange. Shared DNA: Geist + Geist Mono,
+          dense 8-pt grid, 6-px radii, timestamp-as-ornament micro-details.
+          Toggle Tweaks to shift accent hue or pick a single direction.
+        </div>
+        <div style={{ display:'flex', gap: 48, marginTop: 28, alignItems:'center' }}>
+          <div style={{ background: tA.paper, padding:'14px 20px', borderRadius: 8, border:`1px solid ${tA.line}`, boxShadow: tA.shadowMd }}>
+            <VMWordmark t={tA} size={22}/>
+            <div style={{ fontFamily:'"Geist Mono", monospace', fontSize: 10.5, color: tA.muted, marginTop: 8, letterSpacing:'0.08em' }}>
+              A · EMBER
+            </div>
+          </div>
+          <div style={{ background: tB.paper, padding:'14px 20px', borderRadius: 8, border:`1px solid ${tB.line}`, boxShadow: tB.shadowMd }}>
+            <VMWordmark t={tB} size={22}/>
+            <div style={{ fontFamily:'"Geist Mono", monospace', fontSize: 10.5, color: tB.muted, marginTop: 8, letterSpacing:'0.08em' }}>
+              B · SIGNAL
+            </div>
+          </div>
+          <div style={{ flex: 1 }}/>
+        </div>
+      </div>
+
+      {/* Landing */}
+      {(showAll || show==='landing') && (
+        <DCSection title="01 · Landing page" subtitle="Public marketing page · interactive demo above the fold">
+          <DCArtboard label="A · Ember" width={W} height={H_BIG}>
+            <VMLanding t={tA}/>
+          </DCArtboard>
+          <DCArtboard label="B · Signal" width={W} height={H_BIG}>
+            <VMLanding t={tB}/>
+          </DCArtboard>
+        </DCSection>
+      )}
+
+      {/* Login */}
+      {(showAll || show==='auth') && (
+        <DCSection title="02 · Sign in" subtitle="Left panel carries the identity; right panel is the form">
+          <DCArtboard label="A · Ember" width={W} height={H_AUTH}>
+            <VMLogin t={tA}/>
+          </DCArtboard>
+          <DCArtboard label="B · Signal" width={W} height={H_AUTH}>
+            <VMLogin t={tB}/>
+          </DCArtboard>
+        </DCSection>
+      )}
+
+      {/* Register */}
+      {(showAll || show==='auth') && (
+        <DCSection title="03 · Register" subtitle="Same shell, four fields, free-forever note">
+          <DCArtboard label="A · Ember" width={W} height={H_AUTH}>
+            <VMRegister t={tA}/>
+          </DCArtboard>
+          <DCArtboard label="B · Signal" width={W} height={H_AUTH}>
+            <VMRegister t={tB}/>
+          </DCArtboard>
+        </DCSection>
+      )}
+
+      {/* Library grid */}
+      {(showAll || show==='library') && (
+        <DCSection title="04 · Library · grid view" subtitle="Home screen at /app · dense 4-column grid, sidebar with folders + tags">
+          <DCArtboard label="A · Ember" width={W} height={H_BIG}>
+            <VMLibraryGrid t={tA}/>
+          </DCArtboard>
+          <DCArtboard label="B · Signal" width={W} height={H_BIG}>
+            <VMLibraryGrid t={tB}/>
+          </DCArtboard>
+        </DCSection>
+      )}
+
+      {/* Upload page */}
+      {(showAll || show==='upload') && (
+        <DCSection title="04b · Upload page" subtitle="Dedicated page at /app/upload · drag-zone + session queue + pipeline preview">
+          <DCArtboard label="A · Ember" width={W} height={H_BIG}>
+            <VMUploadPage t={tA}/>
+          </DCArtboard>
+          <DCArtboard label="B · Signal" width={W} height={H_BIG}>
+            <VMUploadPage t={tB}/>
+          </DCArtboard>
+        </DCSection>
+      )}
+
+      {/* Library list */}
+      {(showAll || show==='library') && (
+        <DCSection title="05 · Library · list view" subtitle="Compact rows, 40px height, striped for scanability">
+          <DCArtboard label="A · Ember" width={W} height={800}>
+            <VMLibraryList t={tA}/>
+          </DCArtboard>
+          <DCArtboard label="B · Signal" width={W} height={800}>
+            <VMLibraryList t={tB}/>
+          </DCArtboard>
+        </DCSection>
+      )}
+
+      {/* Detail */}
+      {(showAll || show==='detail') && (
+        <DCSection title="06 · Video detail" subtitle="Player + summary below · transcription panel on the right · in-video search active">
+          <DCArtboard label="A · Ember" width={W} height={H_BIG}>
+            <VMVideoDetail t={tA}/>
+          </DCArtboard>
+          <DCArtboard label="B · Signal" width={W} height={H_BIG}>
+            <VMVideoDetail t={tB}/>
+          </DCArtboard>
+        </DCSection>
+      )}
+
+      {/* Notifications */}
+      {(showAll || show==='notif') && (
+        <DCSection title="07 · Processing notifications" subtitle="Bottom-right panel · persists across routes · real-time stage updates">
+          <DCArtboard label="A · Ember" width={380} height={H_NOTIF} style={{ background: tA.paper, padding: 20 }}>
+            <VMNotifPanel t={tA}/>
+          </DCArtboard>
+          <DCArtboard label="B · Signal" width={380} height={H_NOTIF} style={{ background: tB.paper, padding: 20 }}>
+            <VMNotifPanel t={tB}/>
+          </DCArtboard>
+
+          {/* Type / color reference */}
+          <DCArtboard label="Reference · type + palette" width={560} height={H_NOTIF} style={{ background: '#fff', padding: 28 }}>
+            <TokenReference tA={tA} tB={tB}/>
+          </DCArtboard>
+        </DCSection>
+      )}
+
+      {/* Tweaks panel */}
+      {editMode && <TweaksPanel tweaks={tweaks} setTweaks={setTweaks}/>}
+    </DesignCanvas>
+  );
+}
+
+function TokenReference({ tA, tB }) {
+  const swatch = (label, v) => (
+    <div style={{ display:'flex', alignItems:'center', gap: 8, fontSize: 11, fontFamily:'"Geist Mono", monospace' }}>
+      <span style={{ width: 18, height: 18, borderRadius: 4, background: v, border:'1px solid rgba(0,0,0,0.08)' }}/>
+      <span style={{ color:'#555' }}>{label}</span>
+    </div>
+  );
+  return (
+    <div style={{ fontFamily:'Geist' }}>
+      <div style={{ fontSize: 12, fontFamily:'"Geist Mono", monospace', color:'#666', letterSpacing:'0.08em', marginBottom: 14 }}>
+        TYPOGRAPHY
+      </div>
+      <div style={{ fontSize: 32, fontWeight: 600, letterSpacing:'-0.03em', lineHeight: 1 }}>Geist</div>
+      <div style={{ fontSize: 13, color:'#666', marginBottom: 6 }}>Display · 400 / 500 / 600</div>
+      <div style={{ fontFamily:'"Geist Mono", monospace', fontSize: 16, marginBottom: 2 }}>00:58 · EN · 1.2 GB</div>
+      <div style={{ fontSize: 13, color:'#666', marginBottom: 18 }}>Geist Mono · timestamps, metadata, step labels</div>
+
+      <div style={{ fontSize: 12, fontFamily:'"Geist Mono", monospace', color:'#666', letterSpacing:'0.08em', marginBottom: 10 }}>
+        A · EMBER
+      </div>
+      <div style={{ display:'flex', gap: 10, flexWrap:'wrap', marginBottom: 16 }}>
+        {swatch('paper',  tA.paper)}
+        {swatch('ink',    tA.ink)}
+        {swatch('line',   tA.line)}
+        {swatch('accent', tA.accent)}
+        {swatch('accLo',  tA.accentLo)}
+      </div>
+      <div style={{ fontSize: 12, fontFamily:'"Geist Mono", monospace', color:'#666', letterSpacing:'0.08em', marginBottom: 10 }}>
+        B · SIGNAL
+      </div>
+      <div style={{ display:'flex', gap: 10, flexWrap:'wrap' }}>
+        {swatch('paper',  tB.paper)}
+        {swatch('ink',    tB.ink)}
+        {swatch('line',   tB.line)}
+        {swatch('accent', tB.accent)}
+        {swatch('accLo',  tB.accentLo)}
+      </div>
+    </div>
+  );
+}
+
+function TweaksPanel({ tweaks, setTweaks }) {
+  const set = (k, v) => {
+    const next = { ...tweaks, [k]: v };
+    setTweaks(next);
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*');
+  };
+  return (
+    <div style={{
+      position:'fixed', right: 18, bottom: 18, zIndex: 1000,
+      width: 280, padding: 16, borderRadius: 10,
+      background:'#fff', border:'1px solid #e5e1d8',
+      boxShadow:'0 20px 50px rgba(0,0,0,0.18)',
+      fontFamily:'Geist', fontSize: 12, color:'#1f1a14',
+    }}>
+      <div style={{ fontFamily:'"Geist Mono", monospace', fontSize: 10, letterSpacing:'0.1em', color:'#888', marginBottom: 10 }}>
+        TWEAKS
+      </div>
+      <div style={{ fontSize: 15, fontWeight: 600, letterSpacing:'-0.01em', marginBottom: 14 }}>Videomax · identity</div>
+
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ display:'block', marginBottom: 6, color:'#555' }}>A · accent hue · <b style={{ fontFamily:'"Geist Mono", monospace' }}>{tweaks.accentHueA}°</b></label>
+        <input type="range" min="0" max="360" step="1" value={tweaks.accentHueA}
+          onChange={e=>set('accentHueA', +e.target.value)} style={{ width:'100%', accentColor: `oklch(0.70 0.175 ${tweaks.accentHueA})` }}/>
+      </div>
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ display:'block', marginBottom: 6, color:'#555' }}>B · accent hue · <b style={{ fontFamily:'"Geist Mono", monospace' }}>{tweaks.accentHueB}°</b></label>
+        <input type="range" min="0" max="360" step="1" value={tweaks.accentHueB}
+          onChange={e=>set('accentHueB', +e.target.value)} style={{ width:'100%', accentColor: `oklch(0.74 0.175 ${tweaks.accentHueB})` }}/>
+      </div>
+      <div style={{ marginBottom: 10 }}>
+        <label style={{ display:'block', marginBottom: 6, color:'#555' }}>Show</label>
+        <select value={tweaks.showOnly} onChange={e=>set('showOnly', e.target.value)}
+          style={{ width:'100%', padding:'6px 8px', fontSize: 12, border:'1px solid #ddd', borderRadius: 5, fontFamily:'inherit' }}>
+          <option value="all">All surfaces</option>
+          <option value="landing">Landing only</option>
+          <option value="auth">Auth only</option>
+          <option value="library">Library only</option>
+          <option value="upload">Upload only</option>
+          <option value="detail">Detail only</option>
+          <option value="notif">Notifications only</option>
+        </select>
+      </div>
+      <div style={{
+        marginTop: 12, paddingTop: 10, borderTop:'1px solid #eee',
+        fontSize: 10.5, color:'#888', lineHeight: 1.5,
+      }}>
+        Drag on empty canvas to pan · pinch / ctrl-scroll to zoom.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

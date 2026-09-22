@@ -1,0 +1,22 @@
+{
+  "name": "videomax",
+  "private": true,
+  "workspaces": [
+    "apps/backend",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev:backend": "npm --workspace @videomax/backend run dev",
+    "dev:web": "npm --workspace @videomax/web run dev",
+    "build": "npm --workspace @videomax/web run build && npm --workspace @videomax/backend run build",
+    "test": "npm --workspace @videomax/web run test && npm --workspace @videomax/backend run test",
+    "lint": "npm --workspace @videomax/web run lint && npm --workspace @videomax/backend run lint",
+    "typecheck": "npm --workspace @videomax/web run typecheck && npm --workspace @videomax/backend run typecheck",
+    "gates": "node scripts/run-gates.mjs"
+  },
+  "overrides": {
+    "@typescript-eslint/typescript-estree": "8.50.0",
+    "@typescript-eslint/visitor-keys": "8.50.0",
+    "postcss": "8.5.10"
+  }
+}

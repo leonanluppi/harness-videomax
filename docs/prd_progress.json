@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "prd_path": "docs/PRD.md",
+  "generated_at": "2026-05-02T18:29:09Z",
+  "features": {
+    "F01": {
+      "name": "Landing Page",
+      "priority": 2,
+      "wave": 1,
+      "dependencies": [],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F02": {
+      "name": "Authentication System",
+      "priority": 1,
+      "wave": 1,
+      "dependencies": [],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F03": {
+      "name": "Video Upload",
+      "priority": 1,
+      "wave": 2,
+      "dependencies": [
+        "F02"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F04": {
+      "name": "Video Library",
+      "priority": 1,
+      "wave": 3,
+      "dependencies": [
+        "F02",
+        "F03"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F05": {
+      "name": "Folder Organization",
+      "priority": 2,
+      "wave": 4,
+      "dependencies": [
+        "F02",
+        "F03",
+        "F04"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F06": {
+      "name": "Tag Organization",
+      "priority": 2,
+      "wave": 4,
+      "dependencies": [
+        "F02",
+        "F03",
+        "F04"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F07": {
+      "name": "Background Processing Pipeline",
+      "priority": 1,
+      "wave": 3,
+      "dependencies": [
+        "F03"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F08": {
+      "name": "Video Player with Transcription Panel",
+      "priority": 1,
+      "wave": 4,
+      "dependencies": [
+        "F03",
+        "F07"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F09": {
+      "name": "In-Video Transcription Search",
+      "priority": 2,
+      "wave": 5,
+      "dependencies": [
+        "F08"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F10": {
+      "name": "AI Summary Display",
+      "priority": 1,
+      "wave": 5,
+      "dependencies": [
+        "F07",
+        "F08"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F11": {
+      "name": "In-App Processing Notifications",
+      "priority": 2,
+      "wave": 4,
+      "dependencies": [
+        "F03",
+        "F07"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    },
+    "F12": {
+      "name": "Administration Panel",
+      "priority": 2,
+      "wave": 3,
+      "dependencies": [
+        "F02",
+        "F03"
+      ],
+      "status": "pending",
+      "cycles": 0,
+      "failure_reason": null,
+      "report_path": null,
+      "started_at": null,
+      "updated_at": "2026-05-02T18:29:09Z",
+      "completed_at": null
+    }
+  }
+}
