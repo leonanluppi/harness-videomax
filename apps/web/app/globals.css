@@ -3,6 +3,24 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Design system Option B - "Signal" (dark studio, electric orange). */
+  --vm-paper: oklch(0.14 0.012 250);
+  --vm-surface: oklch(0.17 0.013 250);
+  --vm-panel: oklch(0.19 0.014 250);
+  --vm-sunken: oklch(0.12 0.011 250);
+  --vm-line: oklch(0.26 0.015 250);
+  --vm-line-strong: oklch(0.34 0.018 250);
+  --vm-ink: oklch(0.97 0.008 80);
+  --vm-ink-2: oklch(0.88 0.01 80);
+  --vm-muted: oklch(0.65 0.015 250);
+  --vm-faint: oklch(0.48 0.015 250);
+  --vm-accent: #fb8b3d;
+  --vm-accent-hi: #f97316;
+  --vm-accent-lo: oklch(0.26 0.07 50);
+  --vm-accent-ink: #ffd9b8;
+  --vm-err: oklch(0.72 0.17 28);
+  --vm-err-bg: oklch(0.28 0.07 28);
 }
 
 @theme inline {
@@ -10,6 +28,23 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-vm-paper: var(--vm-paper);
+  --color-vm-surface: var(--vm-surface);
+  --color-vm-panel: var(--vm-panel);
+  --color-vm-sunken: var(--vm-sunken);
+  --color-vm-line: var(--vm-line);
+  --color-vm-line-strong: var(--vm-line-strong);
+  --color-vm-ink: var(--vm-ink);
+  --color-vm-ink-2: var(--vm-ink-2);
+  --color-vm-muted: var(--vm-muted);
+  --color-vm-faint: var(--vm-faint);
+  --color-vm-accent: var(--vm-accent);
+  --color-vm-accent-hi: var(--vm-accent-hi);
+  --color-vm-accent-lo: var(--vm-accent-lo);
+  --color-vm-accent-ink: var(--vm-accent-ink);
+  --color-vm-err: var(--vm-err);
+  --color-vm-err-bg: var(--vm-err-bg);
 }
 
 @media (prefers-color-scheme: dark) {
