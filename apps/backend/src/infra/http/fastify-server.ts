@@ -5,25 +5,29 @@ import Fastify, {
 } from "fastify";
 import { toHttpResponse } from "./error-handler";
 import type { HttpMethod, HttpRequest, HttpRoute } from "./types";
+import type { AuthenticatedUser } from "./middleware/auth";
+
+type ResolveUser = (req: HttpRequest) => Promise<AuthenticatedUser | undefined>;
 
 type BuildFastifyServerInput = {
   routes: HttpRoute[];
   logger: { level: "debug" | "info" | "warn" | "error" };
+  resolveUser?: ResolveUser;
 };
 
 export function buildFastifyServer(input: BuildFastifyServerInput): FastifyInstance {
   const app = Fastify({ logger: input.logger });
   registerErrorHandler(app);
-  registerRoutes(app, input.routes);
+  registerRoutes(app, input.routes, input.resolveUser);
   return app;
 }
 
-function registerRoutes(app: FastifyInstance, routes: HttpRoute[]): void {
+function registerRoutes(app: FastifyInstance, routes: HttpRoute[], resolveUser?: ResolveUser): void {
   for (const route of routes) {
     app.route({
       method: route.method,
       url: route.path,
-      handler: async (request, reply) => handleRoute(route, request, reply),
+      handler: async (request, reply) => handleRoute(route, request, reply, resolveUser),
     });
   }
 }
@@ -40,8 +44,15 @@ async function handleRoute(
   route: HttpRoute,
   request: FastifyRequest,
   reply: FastifyReply,
+  resolveUser?: ResolveUser,
 ): Promise<unknown> {
-  const response = await route.handler.handle(toHttpRequest(route.method, request));
+  const httpRequest = toHttpRequest(route.method, request);
+  if (resolveUser) {
+    const user = await resolveUser(httpRequest);
+    if (user) httpRequest.user = user;
+  }
+
+  const response = await route.handler.handle(httpRequest);
   void reply.status(response.status);
   setHeaders(reply, response.headers);
   return response.body ?? null;
