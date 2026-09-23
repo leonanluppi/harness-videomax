@@ -29,8 +29,14 @@ require_startup_commands() {
 ensure_postgres() {
     [ "$HAS_DB" = "true" ] || return 0
     if pg_isready -h 127.0.0.1 -p "$APP_PG_PORT" > /dev/null 2>&1; then
-        APP_PG_MODE="reuse"
-        log "PostgreSQL already running on :${APP_PG_PORT}."
+        if [ -f "$PROJECT_DIR/docker-compose.yml" ] && command -v docker > /dev/null 2>&1 \
+            && docker ps --format '{{.Names}}' 2>/dev/null | grep -qE '(^|[-_])postgres([-_]|$)'; then
+            APP_PG_MODE="docker"
+            log "PostgreSQL already running on :${APP_PG_PORT} (docker)."
+        else
+            APP_PG_MODE="reuse"
+            log "PostgreSQL already running on :${APP_PG_PORT}."
+        fi
         return 0
     fi
     if [ -f "$PROJECT_DIR/docker-compose.yml" ] && command -v docker > /dev/null 2>&1 && docker info > /dev/null 2>&1; then
