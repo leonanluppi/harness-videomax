@@ -18,5 +18,8 @@
     "@typescript-eslint/typescript-estree": "8.50.0",
     "@typescript-eslint/visitor-keys": "8.50.0",
     "postcss": "8.5.10"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1"
   }
 }
